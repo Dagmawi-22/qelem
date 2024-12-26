@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useColorScheme } from "nativewind";
-import { ThemedText } from "./ThemedText";
+import { Ionicons } from "@expo/vector-icons";
 
 export function ThemeSwitcher() {
   const { colorScheme, setColorScheme } = useColorScheme();
@@ -12,12 +12,14 @@ export function ThemeSwitcher() {
 
   return (
     <TouchableOpacity
-      className="px-4 py-2 rounded-full bg-tint dark:bg-tint-dark"
+      className="px-4 py-2 rounded-full bg-tint"
       onPress={toggleTheme}
     >
-      <ThemedText className="text-background dark:text-background-dark">
-        Switch to {colorScheme === "light" ? "Dark" : "Light"} Mode
-      </ThemedText>
+      {colorScheme === "light" ? (
+        <Ionicons name="moon" size={24} color="black" />
+      ) : (
+        <Ionicons name="sunny" size={24} color="yellow" />
+      )}
     </TouchableOpacity>
   );
 }
