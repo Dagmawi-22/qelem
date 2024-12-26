@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "EthioTv",
-    "slug": "EthioTv",
+    "name": "expo-52",
+    "slug": "expo-52",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -32,10 +32,15 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "locales": {
+      "en-US": "./i18n/locales/en-US/translation.json",
+      "ar": "./i18n/locales/ar/translation.json"
     }
   }
 }
