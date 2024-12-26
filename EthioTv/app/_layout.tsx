@@ -10,6 +10,7 @@ function RootLayoutContent() {
   return (
     <Stack
       screenOptions={{
+        headerShown: false,
         headerStyle: {
           backgroundColor: theme === "dark" ? "rgb(21 23 24)" : "white",
         },
