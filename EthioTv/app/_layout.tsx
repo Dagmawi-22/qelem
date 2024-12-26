@@ -2,18 +2,21 @@ import { Stack } from "expo-router";
 import "../global.css";
 import { ThemeProvider, useTheme } from "@/hooks/useTheme";
 import "@/i18n";
-
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { useColorScheme } from "nativewind";
 function RootLayoutContent() {
   const { theme } = useTheme();
-
+  const {} = useColorScheme();
   return (
     <Stack
       screenOptions={{
+        headerShown: false,
         headerStyle: {
-          backgroundColor: theme === "light" ? "white" : "rgb(21 23 24)",
+          backgroundColor: theme === "dark" ? "rgb(21 23 24)" : "white",
         },
         headerTintColor:
-          theme === "light" ? "rgb(17 24 28)" : "rgb(236 237 238)",
+          theme === "dark" ? "rgb(236 237 238)" : "rgb(17 24 28)",
+        headerRight: () => <ThemeSwitcher />,
       }}
     />
   );

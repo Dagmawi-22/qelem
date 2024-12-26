@@ -19,8 +19,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return Colors[colorScheme][colorName];
   };
 
-  console.log("Current theme:", colorScheme);
-
   return (
     <ThemeContext.Provider
       value={{
