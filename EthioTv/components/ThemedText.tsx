@@ -1,60 +1,30 @@
-import { Text, type TextProps, StyleSheet } from 'react-native';
-
-import { useThemeColor } from '@/hooks/useThemeColor';
+import React from "react";
+import { Text, TextProps } from "react-native";
 
 export type ThemedTextProps = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
 };
 
 export function ThemedText({
   style,
-  lightColor,
-  darkColor,
-  type = 'default',
+  type = "default",
+  className,
   ...rest
-}: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+}: ThemedTextProps & { className?: string }) {
+  const typeStyles = {
+    default: "text-base leading-6 text-text dark:text-text-dark",
+    defaultSemiBold:
+      "text-base leading-6 font-semibold text-text dark:text-text-dark",
+    title: "text-3xl font-bold leading-8 text-text dark:text-text-dark",
+    subtitle: "text-xl font-bold text-text dark:text-text-dark",
+    link: "text-base leading-7 text-tint dark:text-tint-dark",
+  };
 
   return (
     <Text
-      style={[
-        { color },
-        type === 'default' ? styles.default : undefined,
-        type === 'title' ? styles.title : undefined,
-        type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
-        type === 'subtitle' ? styles.subtitle : undefined,
-        type === 'link' ? styles.link : undefined,
-        style,
-      ]}
+      className={`${typeStyles[type]} ${className || ""}`}
+      style={style}
       {...rest}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  default: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
-  },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    lineHeight: 30,
-    fontSize: 16,
-    color: '#0a7ea4',
-  },
-});
