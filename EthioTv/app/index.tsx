@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   FlatList,
+  StatusBar,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -48,6 +49,7 @@ function MenuScreen({
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
+      <StatusBar barStyle="dark-content" />
       <Text className="text-xl font-bold text-gray-800 px-4 py-4">
         PDF Reader
       </Text>
@@ -58,13 +60,15 @@ function MenuScreen({
         columnWrapperStyle={{ justifyContent: "space-between", padding: 4 }}
         renderItem={({ item }) => (
           <TouchableOpacity
-            className="flex-1 bg-white m-2 p-4 shadow-lg rounded-lg"
+            className="flex-1 bg-white/40 m-2 p-4 shadow-lg rounded-lg"
             onPress={() => onSelectPdf(item)}
           >
             <Text className="text-lg font-bold text-gray-700">
               {item.title}
             </Text>
-            <Text className="text-sm text-gray-500">{item.sectionTitle}</Text>
+            <Text className="text-sm text-gray-500">
+              {item.sectionTitle}
+            </Text>
           </TouchableOpacity>
         )}
       />
@@ -97,7 +101,8 @@ function PDFScreen({
   }, [pdfPath]);
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-[#1a1a1a]/30">
+      <StatusBar barStyle="dark-content" />
       <View className="flex-row items-center bg-gray-50 px-4 py-2">
         <TouchableOpacity onPress={onBack} className="flex-row items-center">
           <Ionicons name="arrow-back" size={24} color="#4B5563" />
@@ -123,7 +128,7 @@ export default function App() {
   } | null>(null);
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-[#1a1a1a]/30">
       {selectedPdf ? (
         <PDFScreen
           pdfPath={selectedPdf.path}
