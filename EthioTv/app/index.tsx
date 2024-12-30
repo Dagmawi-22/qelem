@@ -4,12 +4,11 @@ import {
   View,
   ScrollView,
   SafeAreaView,
-  Platform,
+  ActivityIndicator,
+  FlatList,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import { WebView } from "react-native-webview";
-import * as FileSystem from "expo-file-system";
+import { Ionicons } from "@expo/vector-icons";
 import { Asset } from "expo-asset";
 import Pdf from "react-native-pdf";
 
@@ -40,45 +39,35 @@ function MenuScreen({
 }: {
   onSelectPdf: (pdf: { title: string; path: string }) => void;
 }) {
-  const [expandedSection, setExpandedSection] = useState<number | null>(null);
+  const allPdfs = sections.flatMap((section) =>
+    section.subPdfs.map((pdf) => ({
+      ...pdf,
+      sectionTitle: section.title,
+    }))
+  );
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
       <Text className="text-xl font-bold text-gray-800 px-4 py-4">
         PDF Reader
       </Text>
-      <ScrollView>
-        {sections.map((section, idx) => (
-          <View key={idx}>
-            <TouchableOpacity
-              className="flex-row items-center justify-between px-4 py-3"
-              onPress={() =>
-                setExpandedSection(expandedSection === idx ? null : idx)
-              }
-            >
-              <Text className="text-lg text-gray-700">{section.title}</Text>
-              <MaterialIcons
-                name={expandedSection === idx ? "expand-less" : "expand-more"}
-                size={24}
-                color="#4B5563"
-              />
-            </TouchableOpacity>
-            {expandedSection === idx && (
-              <View className="bg-gray-100">
-                {section.subPdfs.map((pdf, pdfIdx) => (
-                  <TouchableOpacity
-                    key={pdfIdx}
-                    className="px-8 py-2"
-                    onPress={() => onSelectPdf(pdf)}
-                  >
-                    <Text className="text-gray-600">{pdf.title}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </View>
-        ))}
-      </ScrollView>
+      <FlatList
+        data={allPdfs}
+        keyExtractor={(item, index) => `${item.title}-${index}`}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: "space-between", padding: 4 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            className="flex-1 bg-white m-2 p-4 shadow-lg rounded-lg"
+            onPress={() => onSelectPdf(item)}
+          >
+            <Text className="text-lg font-bold text-gray-700">
+              {item.title}
+            </Text>
+            <Text className="text-sm text-gray-500">{item.sectionTitle}</Text>
+          </TouchableOpacity>
+        )}
+      />
     </SafeAreaView>
   );
 }
@@ -91,6 +80,7 @@ function PDFScreen({
   onBack: () => void;
 }) {
   const [pdfUri, setPdfUri] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function loadPDF() {
@@ -99,6 +89,8 @@ function PDFScreen({
         setPdfUri(asset.localUri);
       } catch (error) {
         console.error("Error loading PDF:", error);
+      } finally {
+        setLoading(false);
       }
     }
     loadPDF();
@@ -112,7 +104,14 @@ function PDFScreen({
           <Text className="ml-2 text-gray-600">Back to Menu</Text>
         </TouchableOpacity>
       </View>
-      {pdfUri && <Pdf source={{ uri: pdfUri }} style={{ flex: 1 }} />}
+      {loading ? (
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#4B5563" />
+          <Text className="mt-2 text-gray-600">Getting pdf ready...</Text>
+        </View>
+      ) : (
+        pdfUri && <Pdf source={{ uri: pdfUri }} style={{ flex: 1 }} />
+      )}
     </SafeAreaView>
   );
 }
