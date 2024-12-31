@@ -2,45 +2,25 @@ import {
   TouchableOpacity,
   Text,
   View,
-  ScrollView,
+  Image,
   SafeAreaView,
   ActivityIndicator,
   FlatList,
   StatusBar,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Asset } from "expo-asset";
 import Pdf from "react-native-pdf";
-
-interface Section {
-  title: string;
-  subPdfs: { title: string; path: string }[];
-}
-
-const sections: Section[] = [
-  {
-    title: "Section 1",
-    subPdfs: [
-      { title: "Document 1.1", path: require("../assets/pdfs/ict.pdf") },
-      { title: "Document 1.2", path: require("../assets/pdfs/ict.pdf") },
-    ],
-  },
-  {
-    title: "Section 2",
-    subPdfs: [
-      { title: "Document 2.1", path: require("../assets/pdfs/ict.pdf") },
-      { title: "Document 2.2", path: require("../assets/pdfs/ict.pdf") },
-    ],
-  },
-];
+import { PDF_SECTIONS } from "@/constants/Pdfs";
+import IrregularHeader from "./components/Header";
 
 function MenuScreen({
   onSelectPdf,
 }: {
   onSelectPdf: (pdf: { title: string; path: string }) => void;
 }) {
-  const allPdfs = sections.flatMap((section) =>
+  const allPdfs = PDF_SECTIONS.flatMap((section) =>
     section.subPdfs.map((pdf) => ({
       ...pdf,
       sectionTitle: section.title,
@@ -48,30 +28,43 @@ function MenuScreen({
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      <StatusBar barStyle="dark-content" />
-      <Text className="text-xl font-bold text-gray-800 px-4 py-4">
-        PDF Reader
-      </Text>
-      <FlatList
-        data={allPdfs}
-        keyExtractor={(item, index) => `${item.title}-${index}`}
-        numColumns={2}
-        columnWrapperStyle={{ justifyContent: "space-between", padding: 4 }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            className="flex-1 bg-white/40 m-2 p-4 shadow-lg rounded-lg"
-            onPress={() => onSelectPdf(item)}
-          >
-            <Text className="text-lg font-bold text-gray-700">
-              {item.title}
-            </Text>
-            <Text className="text-sm text-gray-500">
-              {item.sectionTitle}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
+    <SafeAreaView className="flex-1 bg-white">
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <IrregularHeader />
+      <View className="rounded-3xl overflow-hidden mt-24">
+        <FlatList
+          data={allPdfs}
+          contentContainerStyle={{
+            paddingVertical: 20,
+          }}
+          className="rounded-3xl bg-[#ffffff1a]"
+          keyExtractor={(item, index) => `${item.title}-${index}`}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: "space-between", padding: 4 }}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              className="flex-1 bg-white m-2 rounded-lg overflow-hidden"
+              onPress={() => onSelectPdf(item)}
+            >
+              <View className="h-32 min-w-fit overflow-hidden rounded-lg">
+                <Image
+                  source={require("../assets/covers/12/ict.png")}
+                  className="w-full h-full rounded-lg"
+                  resizeMode="cover"
+                />
+              </View>
+              <View className="p-3">
+                <Text className="text-lg font-bold text-gray-800">
+                  {item.title}
+                </Text>
+                <Text className="text-sm text-gray-500 mt-1">
+                  {item.sectionTitle}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -101,12 +94,14 @@ function PDFScreen({
   }, [pdfPath]);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#1a1a1a]/30">
-      <StatusBar barStyle="dark-content" />
-      <View className="flex-row items-center bg-gray-50 px-4 py-2">
-        <TouchableOpacity onPress={onBack} className="flex-row items-center">
-          <Ionicons name="arrow-back" size={24} color="#4B5563" />
-          <Text className="ml-2 text-gray-600">Back to Menu</Text>
+    <SafeAreaView className="flex-1 bg-white">
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <View className="flex-row justify-end items-end bg-white p-5">
+        <TouchableOpacity
+          onPress={onBack}
+          className="flex-row items-end justify-end px-4 py-3 bg-black/40 rounded-lg active:bg-black-200 transition-all duration-200"
+        >
+          <FontAwesome name="close" size={24} color="gray" />
         </TouchableOpacity>
       </View>
       {loading ? (
@@ -115,7 +110,7 @@ function PDFScreen({
           <Text className="mt-2 text-gray-600">Getting pdf ready...</Text>
         </View>
       ) : (
-        pdfUri && <Pdf source={{ uri: pdfUri }} style={{ flex: 1 }} />
+        pdfUri && <Pdf source={{ uri: pdfUri }} />
       )}
     </SafeAreaView>
   );
