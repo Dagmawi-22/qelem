@@ -15,7 +15,7 @@ export const PDF_SECTIONS: Section[] = [
       {
         title: "Chemistry",
         path: require("../assets/pdfs/ict.pdf"),
-        cover: require("../assets/covers/12/ict.png"),
+        cover: require("../assets/covers/12/agri.png"),
       },
     ],
   },

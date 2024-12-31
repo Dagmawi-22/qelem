@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, StatusBar, Image } from "react-native";
 
 const IrregularHeader = () => {
-    const logo = require("../../assets/images/icon.png");
+  const logo = require("../../assets/images/icon.png");
   return (
     <View style={styles.container}>
       <StatusBar
@@ -11,11 +11,7 @@ const IrregularHeader = () => {
         translucent
       />
 
-      <Image
-        source={logo}
-        style={styles.logo}
-        resizeMode="contain"
-      />
+      <Image source={logo} style={styles.logo} resizeMode="contain" />
 
       <View style={styles.background}>
         <View style={styles.curve} />
@@ -34,7 +30,7 @@ const IrregularHeader = () => {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-    height: 250, 
+    height: 250,
     width: "100%",
     overflow: "hidden",
     borderBottomEndRadius: 50,
@@ -42,11 +38,11 @@ const styles = StyleSheet.create({
   logo: {
     position: "absolute",
     top: 40,
-    right: 20, 
+    right: 20,
     width: 50,
-    height: 50, 
-    zIndex: 1, 
-    borderRadius: 25
+    height: 50,
+    zIndex: 1,
+    borderRadius: 25,
   },
   background: {
     position: "absolute",
@@ -68,7 +64,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     position: "absolute",
-    top: (StatusBar as any)?.currentHeight + 80, 
+    top: (StatusBar as any)?.currentHeight + 80,
     left: 20,
     right: 20,
   },
@@ -76,6 +72,9 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     color: "#fff",
+    textShadowColor: "rgba(0, 0, 0, 0.75)", 
+    textShadowOffset: { width: 2, height: 2 }, 
+    textShadowRadius: 5, 
   },
   description: {
     fontSize: 18,
@@ -83,6 +82,9 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     marginTop: 8,
     lineHeight: 20,
+    textShadowColor: "rgba(0, 0, 0, 0.75)", 
+    textShadowOffset: { width: 1, height: 1 }, 
+    textShadowRadius: 3, 
   },
 });
 
