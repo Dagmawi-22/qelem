@@ -48,7 +48,7 @@ function MenuScreen({
             >
               <View className="h-32 min-w-fit overflow-hidden rounded-lg">
                 <Image
-                  source={require("../assets/images/icon.png")}
+                  source={require("../assets/covers/12/ict.png")}
                   className="w-full h-full rounded-lg"
                   resizeMode="cover"
                 />
