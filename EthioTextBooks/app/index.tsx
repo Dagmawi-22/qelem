@@ -2,45 +2,24 @@ import {
   TouchableOpacity,
   Text,
   View,
-  ScrollView,
+  Image,
   SafeAreaView,
   ActivityIndicator,
   FlatList,
   StatusBar,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Asset } from "expo-asset";
 import Pdf from "react-native-pdf";
-
-interface Section {
-  title: string;
-  subPdfs: { title: string; path: string }[];
-}
-
-const sections: Section[] = [
-  {
-    title: "Section 1",
-    subPdfs: [
-      { title: "Document 1.1", path: require("../assets/pdfs/ict.pdf") },
-      { title: "Document 1.2", path: require("../assets/pdfs/ict.pdf") },
-    ],
-  },
-  {
-    title: "Section 2",
-    subPdfs: [
-      { title: "Document 2.1", path: require("../assets/pdfs/ict.pdf") },
-      { title: "Document 2.2", path: require("../assets/pdfs/ict.pdf") },
-    ],
-  },
-];
+import { PDF_SECTIONS } from "@/constants/Pdfs";
 
 function MenuScreen({
   onSelectPdf,
 }: {
   onSelectPdf: (pdf: { title: string; path: string }) => void;
 }) {
-  const allPdfs = sections.flatMap((section) =>
+  const allPdfs = PDF_SECTIONS.flatMap((section) =>
     section.subPdfs.map((pdf) => ({
       ...pdf,
       sectionTitle: section.title,
@@ -48,11 +27,16 @@ function MenuScreen({
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      <StatusBar barStyle="dark-content" />
-      <Text className="text-xl font-bold text-gray-800 px-4 py-4">
-        PDF Reader
-      </Text>
+    <SafeAreaView className="flex-1 bg-[#c7ae6a]">
+      <StatusBar barStyle="dark-content" backgroundColor="#c7ae6a" />
+      <View className="flex flex-col gap-2 p-5">
+        <Text className="text-xl font-bold text-center text-gray-800">
+          PDF Reader
+        </Text>
+        <Text className="text-md font-normal text-center text-gray-600">
+          PDF Reader
+        </Text>
+      </View>
       <FlatList
         data={allPdfs}
         keyExtractor={(item, index) => `${item.title}-${index}`}
@@ -60,15 +44,26 @@ function MenuScreen({
         columnWrapperStyle={{ justifyContent: "space-between", padding: 4 }}
         renderItem={({ item }) => (
           <TouchableOpacity
-            className="flex-1 bg-white/40 m-2 p-4 shadow-lg rounded-lg"
+            className="flex-1 bg-white m-2 rounded-lg overflow-hidden shadow-sm shadow-black/20"
             onPress={() => onSelectPdf(item)}
           >
-            <Text className="text-lg font-bold text-gray-700">
-              {item.title}
-            </Text>
-            <Text className="text-sm text-gray-500">
-              {item.sectionTitle}
-            </Text>
+            {/* Image Container */}
+            <View className="h-32 bg-gray-200">
+              <Image
+                source={require("../assets/images/icon.png")}
+                className="w-full h-full"
+                resizeMode="cover"
+              />
+            </View>
+            {/* Text Container */}
+            <View className="p-3">
+              <Text className="text-lg font-bold text-gray-800">
+                {item.title}
+              </Text>
+              <Text className="text-sm text-gray-500 mt-1">
+                {item.sectionTitle}
+              </Text>
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -101,12 +96,14 @@ function PDFScreen({
   }, [pdfPath]);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#1a1a1a]/30">
-      <StatusBar barStyle="dark-content" />
-      <View className="flex-row items-center bg-gray-50 px-4 py-2">
-        <TouchableOpacity onPress={onBack} className="flex-row items-center">
-          <Ionicons name="arrow-back" size={24} color="#4B5563" />
-          <Text className="ml-2 text-gray-600">Back to Menu</Text>
+    <SafeAreaView className="flex-1 bg-[#c7ae6a]">
+      <StatusBar barStyle="dark-content" backgroundColor="#c7ae6a" />
+      <View className="flex-row justify-end items-end bg-[#c7ae6a] p-5">
+        <TouchableOpacity
+          onPress={onBack}
+          className="flex-row items-end justify-end px-4 py-3 bg-white/40 rounded-lg active:bg-gray-200 transition-all duration-200"
+        >
+          <FontAwesome name="close" size={24} color="gray" />
         </TouchableOpacity>
       </View>
       {loading ? (
