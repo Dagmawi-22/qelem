@@ -7,15 +7,15 @@ export const PDF_SECTIONS: Section[] = [
   {
     title: "Section 1",
     subPdfs: [
-      { title: "Document 1.1", path: require("../assets/pdfs/ict.pdf") },
-      { title: "Document 1.2", path: require("../assets/pdfs/ict.pdf") },
+      { title: "ICT", path: require("../assets/pdfs/ict.pdf") },
+      { title: "Chemistry", path: require("../assets/pdfs/ict.pdf") },
     ],
   },
   {
     title: "Section 2",
     subPdfs: [
-      { title: "Document 2.1", path: require("../assets/pdfs/ict.pdf") },
-      { title: "Document 2.2", path: require("../assets/pdfs/ict.pdf") },
+      { title: "Biology", path: require("../assets/pdfs/ict.pdf") },
+      { title: "Agri", path: require("../assets/pdfs/ict.pdf") },
     ],
   },
 ];
