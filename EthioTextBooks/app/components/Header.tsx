@@ -1,24 +1,20 @@
 import React from "react";
-import { View, Text, StyleSheet, StatusBar, Dimensions } from "react-native";
+import { View, Text, StyleSheet, StatusBar } from "react-native";
 
-const { width } = Dimensions.get("window");
 
 const IrregularHeader = () => {
   return (
     <View style={styles.container}>
-      {/* Status Bar */}
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
         translucent
       />
 
-      {/* Irregular Shape Background */}
       <View style={styles.background}>
         <View style={styles.curve} />
       </View>
 
-      {/* Header Title and Description */}
       <View style={styles.textContainer}>
         <Text style={styles.title}>Awesome Header</Text>
         <Text style={styles.description}>
@@ -36,6 +32,7 @@ const styles = StyleSheet.create({
     height: 200,
     width: "100%",
     overflow: "hidden",
+    borderBottomEndRadius: 50
   },
   background: {
     position: "absolute",
@@ -43,7 +40,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: "100%",
-    backgroundColor: "#00B4DB", // Teal (primary color)
+    backgroundColor: "#00B4DB", 
   },
   curve: {
     position: "absolute",
@@ -51,13 +48,13 @@ const styles = StyleSheet.create({
     left: -50,
     right: -50,
     height: 150,
-    backgroundColor: "#0083B0", // Darker teal (secondary color)
+    backgroundColor: "#0083B0", 
     borderRadius: 100,
     transform: [{ rotate: "-10deg" }],
   },
   textContainer: {
     position: "absolute",
-    top: (StatusBar as any)?.currentHeight + 40, // Adjust for status bar height
+    top: (StatusBar as any)?.currentHeight + 40,
     left: 20,
     right: 20,
   },

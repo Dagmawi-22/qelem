@@ -9,7 +9,7 @@ import {
   StatusBar,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Asset } from "expo-asset";
 import Pdf from "react-native-pdf";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
@@ -43,18 +43,16 @@ function MenuScreen({
           columnWrapperStyle={{ justifyContent: "space-between", padding: 4 }}
           renderItem={({ item }) => (
             <TouchableOpacity
-              className="flex-1 bg-white m-2 rounded-lg overflow-hidden shadow-sm shadow-black/20"
+              className="flex-1 bg-white m-2 rounded-lg overflow-hidden"
               onPress={() => onSelectPdf(item)}
             >
-              {/* Image Container */}
-              <View className="h-32 bg-gray-200">
+              <View className="h-32 min-w-fit overflow-hidden rounded-lg">
                 <Image
                   source={require("../assets/images/icon.png")}
-                  className="w-full h-full"
+                  className="w-full h-full rounded-lg"
                   resizeMode="cover"
                 />
               </View>
-              {/* Text Container */}
               <View className="p-3">
                 <Text className="text-lg font-bold text-gray-800">
                   {item.title}
