@@ -13,4 +13,7 @@ export const Colors = {
   },
 } as const;
 
+export const AppPrimaryColor = "#0083B0";
+export const AppSecondaryColor = "00B4DB";
+
 export type ColorName = keyof typeof Colors.light & keyof typeof Colors.dark;

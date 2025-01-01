@@ -1,8 +1,8 @@
-// components/BottomNav.tsx
 import React, { useEffect } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Href, usePathname, useRouter } from "expo-router";
+import { AppPrimaryColor } from "@/constants/Colors";
 
 type Tab = {
   id: string;
@@ -37,13 +37,13 @@ const BottomNav = () => {
           <MaterialIcons
             name={tab.icon}
             size={24}
-            color={pathname === `/${tab.id}` ? "#0083B0" : "gray"}
+            color={pathname === `/${tab.id}` ? AppPrimaryColor : "gray"}
           />
           <Text
             style={[
               styles.tabText,
               {
-                color: pathname === `/${tab.id}` ? "#0083B0" : "gray",
+                color: pathname === `/${tab.id}` ? AppPrimaryColor : "gray",
               },
             ]}
           >
