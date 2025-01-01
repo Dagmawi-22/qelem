@@ -1,4 +1,3 @@
-// app/_layout.js
 import { Stack } from "expo-router";
 import "../global.css";
 import { ThemeProvider, useTheme } from "@/hooks/useTheme";
@@ -24,7 +23,7 @@ function RootLayoutContent() {
           headerRight: () => <ThemeSwitcher />,
         }}
       />
-      <BottomNav /> {/* Add the BottomNav component here */}
+      <BottomNav />
     </>
   );
 }

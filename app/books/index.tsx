@@ -8,9 +8,8 @@ import {
   FlatList,
   StatusBar,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
-import { Asset } from "expo-asset";
 import Pdf from "react-native-pdf";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
 import AppHeader from "../components/Header";
@@ -76,27 +75,12 @@ function PDFScreen({
   pdfPath: string;
   onBack: () => void;
 }) {
-  const [pdfUri, setPdfUri] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    async function loadPDF() {
-      try {
-        const asset = await Asset.fromModule(pdfPath).downloadAsync();
-        setPdfUri(asset.localUri);
-      } catch (error) {
-        console.error("Error loading PDF:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadPDF();
-  }, [pdfPath]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View className="flex-row justify-end items-end bg-white p-5">
+      <View className="flex-row justify-end items-end bg-white p-5 py-10">
         <TouchableOpacity
           onPress={onBack}
           className="flex-row items-end justify-end px-4 py-3 bg-black/10 rounded-lg active:bg-black-200 transition-all duration-200"
@@ -110,7 +94,14 @@ function PDFScreen({
           <Text className="mt-2 text-gray-600">Getting pdf ready...</Text>
         </View>
       ) : (
-        pdfUri && <Pdf source={{ uri: pdfUri }} />
+        <Pdf
+          source={{ uri: pdfPath }}
+          onLoadComplete={() => setLoading(false)}
+          onError={(error) => {
+            console.error("Error loading PDF:", error);
+            setLoading(false);
+          }}
+        />
       )}
     </SafeAreaView>
   );
