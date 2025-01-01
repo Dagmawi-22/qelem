@@ -13,7 +13,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Asset } from "expo-asset";
 import Pdf from "react-native-pdf";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
-import IrregularHeader from "./components/Header";
+import AppHeader from "../components/Header";
 
 function MenuScreen({
   onSelectPdf,
@@ -30,7 +30,7 @@ function MenuScreen({
   return (
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <IrregularHeader />
+      <AppHeader />
       <View className="rounded-3xl overflow-hidden mt-24">
         <FlatList
           data={allPdfs}
@@ -48,7 +48,7 @@ function MenuScreen({
             >
               <View className="h-32 min-w-fit overflow-hidden rounded-lg">
                 <Image
-                  source={require("../assets/covers/12/ict.png")}
+                  source={require("../../assets/covers/12/ict.png")}
                   className="w-full h-full rounded-lg"
                   resizeMode="cover"
                 />
