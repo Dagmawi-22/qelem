@@ -22,7 +22,11 @@ export const PDF_SECTIONS: Section[] = [
   {
     title: "Section 2",
     subPdfs: [
-      { title: "Biology", path: require("../assets/pdfs/ict.pdf") },
+      {
+        title: "Biology",
+        path: require("../assets/pdfs/ict.pdf"),
+        cover: require("../assets/covers/12/agri.png"),
+      },
       {
         title: "Agri",
         path: require("../assets/pdfs/ict.pdf"),
