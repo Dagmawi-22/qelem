@@ -1,10 +1,9 @@
 // components/BottomNav.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Href, useRouter } from "expo-router";
+import { Href, usePathname, useRouter } from "expo-router";
 
-// Define the type for a tab
 type Tab = {
   id: string;
   label: string;
@@ -14,18 +13,18 @@ type Tab = {
 const BottomNav = () => {
   const router = useRouter();
 
-  // Define the tabs
   const tabs: Tab[] = [
     { id: "books", label: "Books", icon: "book" },
     { id: "bookmarks", label: "Bookmarks", icon: "bookmark" },
     { id: "notes", label: "Notes", icon: "note" },
   ];
 
-  // Handle tab press
   const handleTabPress = (tab: Tab) => {
     const path = `/${tab.id}` as Href;
     router.push(path);
   };
+
+  const pathname = usePathname();
 
   return (
     <View style={styles.container}>
@@ -38,14 +37,13 @@ const BottomNav = () => {
           <MaterialIcons
             name={tab.icon}
             size={24}
-            color={(router as any).pathname === `/${tab.id}` ? "black" : "gray"}
+            color={pathname === `/${tab.id}` ? "#0083B0" : "gray"}
           />
           <Text
             style={[
               styles.tabText,
               {
-                color:
-                  (router as any).pathname === `/${tab.id}` ? "black" : "gray",
+                color: pathname === `/${tab.id}` ? "#0083B0" : "gray",
               },
             ]}
           >
