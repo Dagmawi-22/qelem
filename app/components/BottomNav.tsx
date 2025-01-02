@@ -15,7 +15,7 @@ const BottomNav = () => {
   const router = useRouter();
 
   const tabs: Tab[] = [
-    { id: "books", label: "Books", icon: "book", isIndex: true },
+    { id: "", label: "Books", icon: "book" },
     { id: "bookmarks", label: "Bookmarks", icon: "bookmark" },
     { id: "notes", label: "Notes", icon: "note" },
   ];
@@ -41,8 +41,6 @@ const BottomNav = () => {
             color={
               pathname === `/${tab.id}`
                 ? AppPrimaryColor
-                : tab?.isIndex && pathname === "/"
-                ? AppPrimaryColor
                 : "gray"
             }
           />
@@ -52,8 +50,6 @@ const BottomNav = () => {
               {
                 color:
                   pathname === `/${tab.id}`
-                    ? AppPrimaryColor
-                    : tab?.isIndex && pathname === "/"
                     ? AppPrimaryColor
                     : "gray",
               },
