@@ -14,6 +14,7 @@ import { Asset } from "expo-asset";
 import Pdf from "react-native-pdf";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
 import IrregularHeader from "./components/Header";
+import GradeChipSelector from "@/components/ui/GradeSelector";
 
 function MenuScreen({
   onSelectPdf,
@@ -31,6 +32,7 @@ function MenuScreen({
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <IrregularHeader />
+      <GradeChipSelector defaultSelected="12" onSelect={() => {}} />
       <View className="rounded-3xl overflow-hidden mt-24">
         <FlatList
           data={allPdfs}

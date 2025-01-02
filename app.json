@@ -5,14 +5,13 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "qelem",
+    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "permissions": ["INTERNET"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -38,11 +37,14 @@
       "expo-localization",
       "expo-asset"
     ],
+    "development": {
+      "developmentClient": true
+    },
     "experiments": {
       "typedRoutes": true
     },
     "locales": {
-      "en-US": "./i18n/locales/en/translation.json",
+      "en-US": "./i18n/locales/en-US/translation.json",
       "ar": "./i18n/locales/ar/translation.json"
     },
     "extra": {

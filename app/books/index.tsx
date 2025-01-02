@@ -10,7 +10,7 @@ import {
   Dimensions,
   StyleSheet,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import Pdf from "react-native-pdf";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
@@ -45,7 +45,8 @@ function MenuScreen({
           renderItem={({ item }) => (
             <TouchableOpacity
               className="flex-1 bg-white m-2 rounded-lg overflow-hidden"
-              onPress={() => onSelectPdf(item)}
+              // onPress={() => onSelectPdf(item)}
+              onPress={() => alert("item")}
             >
               <View className="h-32 min-w-fit overflow-hidden rounded-lg">
                 <Image
@@ -70,18 +71,41 @@ function MenuScreen({
   );
 }
 
-function PDFScreen({
-  pdfPath,
-  onBack,
-}: {
-  pdfPath: string;
+interface PDFScreenProps {
+  pdfPath: string | undefined;
   onBack: () => void;
-}) {
+}
+
+interface Source {
+  uri: string | undefined;
+  cache?: boolean;
+  enableAntialiasing?: boolean;
+  enableAnnotationRendering?: boolean;
+}
+
+function PDFScreen({ pdfPath, onBack }: PDFScreenProps) {
   const [loading, setLoading] = useState<boolean>(true);
-  const source = {
-    uri: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
-    cache: true,
+  const [error, setError] = useState<string | null>(null);
+
+  const source: Source = {
+    uri: pdfPath,
+    // cache: true,
+    // enableAntialiasing: true,
+    // enableAnnotationRendering: true,
   };
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+  }, [pdfPath]);
+
+  if (1 === 1) {
+    return (
+      <SafeAreaView className="flex-1 bg-black justify-center items-center">
+        <Text className="text-white">{error}</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-black">
@@ -89,7 +113,7 @@ function PDFScreen({
       <View className="flex-row justify-end items-end bg-white p-5 py-10">
         <TouchableOpacity
           onPress={onBack}
-          className="flex-row items-end justify-end px-4 py-3 bg-black/10 rounded-lg active:bg-black-200 transition-all duration-200"
+          className="flex-row items-end justify-end px-4 py-3 bg-black/10 rounded-lg"
         >
           <FontAwesome name="close" size={24} color="gray" />
         </TouchableOpacity>
@@ -100,27 +124,18 @@ function PDFScreen({
           <Text className="mt-2 text-gray-600">Getting pdf ready...</Text>
         </View>
       ) : (
-        <View style={styles.container}>
-          <Pdf
-            source={source}
-            onLoadComplete={(numberOfPages, filePath) => {
-              setTimeout(() => {
-                setLoading(false);
-              }, 3000);
-              console.log(`Number of pages: ${numberOfPages}`);
-            }}
-            onPageChanged={(page, numberOfPages) => {
-              console.log(`Current page: ${page}`);
-            }}
-            onError={(error) => {
-              console.log(error);
-            }}
-            onPressLink={(uri) => {
-              console.log(`Link pressed: ${uri}`);
-            }}
-            style={styles.pdf}
-          />
-        </View>
+        <Pdf
+          source={source}
+          style={styles.pdf}
+          onLoadComplete={(numberOfPages: number) => {
+            setLoading(false);
+            console.log(`Number of pages: ${numberOfPages}`);
+          }}
+          onError={(error: any) => {
+            setError("Failed to load PDF: " + error.message);
+            setLoading(false);
+          }}
+        />
       )}
     </SafeAreaView>
   );
@@ -134,9 +149,9 @@ export default function App() {
 
   return (
     <View className="flex-1 bg-[#1a1a1a]/30">
-      {selectedPdf ? (
+      {false ? (
         <PDFScreen
-          pdfPath={selectedPdf.path}
+          pdfPath={selectedPdf?.path}
           onBack={() => setSelectedPdf(null)}
         />
       ) : (
@@ -152,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     marginTop: 25,
-    backgroundColor: "red",
+    backgroundColor: "blue",
   },
   pdf: {
     flex: 1,
