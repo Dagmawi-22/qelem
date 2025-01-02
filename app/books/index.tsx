@@ -9,12 +9,15 @@ import {
   StatusBar,
   Dimensions,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import Pdf from "react-native-pdf";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
 import AppHeader from "../components/Header";
+import { PDFScreenProps, PdfSource } from "@/constants/interfaces";
+import GradeChipSelector from "@/components/ui/GradeSelector";
 
 function MenuScreen({
   onSelectPdf,
@@ -32,11 +35,14 @@ function MenuScreen({
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <AppHeader />
-      <View className="rounded-3xl overflow-hidden mt-24">
+      <GradeChipSelector />
+      <View className="flex-1">
+        {" "}
+        {/* Ensure this View takes up remaining space */}
         <FlatList
           data={allPdfs}
           contentContainerStyle={{
-            paddingVertical: 20,
+            paddingVertical: 5,
           }}
           className="rounded-3xl bg-[#ffffff1a]"
           keyExtractor={(item, index) => `${item.title}-${index}`}
@@ -45,8 +51,7 @@ function MenuScreen({
           renderItem={({ item }) => (
             <TouchableOpacity
               className="flex-1 bg-white m-2 rounded-lg overflow-hidden"
-              // onPress={() => onSelectPdf(item)}
-              onPress={() => alert("item")}
+              onPress={() => onSelectPdf(item)}
             >
               <View className="h-32 min-w-fit overflow-hidden rounded-lg">
                 <Image
@@ -71,23 +76,11 @@ function MenuScreen({
   );
 }
 
-interface PDFScreenProps {
-  pdfPath: string | undefined;
-  onBack: () => void;
-}
-
-interface Source {
-  uri: string | undefined;
-  cache?: boolean;
-  enableAntialiasing?: boolean;
-  enableAnnotationRendering?: boolean;
-}
-
 function PDFScreen({ pdfPath, onBack }: PDFScreenProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const source: Source = {
+  const source: PdfSource = {
     uri: pdfPath,
     // cache: true,
     // enableAntialiasing: true,
@@ -99,7 +92,7 @@ function PDFScreen({ pdfPath, onBack }: PDFScreenProps) {
     setError(null);
   }, [pdfPath]);
 
-  if (1 === 1) {
+  if (error) {
     return (
       <SafeAreaView className="flex-1 bg-black justify-center items-center">
         <Text className="text-white">{error}</Text>
@@ -149,13 +142,13 @@ export default function App() {
 
   return (
     <View className="flex-1 bg-[#1a1a1a]/30">
-      {false ? (
+      {selectedPdf ? (
         <PDFScreen
           pdfPath={selectedPdf?.path}
           onBack={() => setSelectedPdf(null)}
         />
       ) : (
-        <MenuScreen onSelectPdf={setSelectedPdf} />
+        <MenuScreen onSelectPdf={() => {}} />
       )}
     </View>
   );

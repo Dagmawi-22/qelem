@@ -33,7 +33,7 @@ function MenuScreen({
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <IrregularHeader />
       <GradeChipSelector defaultSelected="12" onSelect={() => {}} />
-      <View className="rounded-3xl overflow-hidden mt-24">
+      <View className="rounded-3xl overflow-hidden">
         <FlatList
           data={allPdfs}
           contentContainerStyle={{

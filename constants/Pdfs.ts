@@ -34,4 +34,19 @@ export const PDF_SECTIONS: Section[] = [
       },
     ],
   },
+  {
+    title: "Section 2",
+    subPdfs: [
+      {
+        title: "Biology",
+        path: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
+        cover: require("../assets/covers/12/agri.png"),
+      },
+      {
+        title: "Agri",
+        path: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
+        cover: require("../assets/covers/12/agri.png"),
+      },
+    ],
+  },
 ];

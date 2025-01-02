@@ -1,5 +1,12 @@
+import { AppPrimaryColor } from "@/constants/Colors";
 import React, { useState } from "react";
-import { ScrollView, TouchableOpacity, Text } from "react-native";
+import {
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  View,
+} from "react-native";
 
 const gradeOptions = [
   { label: "Grade 12", value: "12" },
@@ -29,30 +36,83 @@ const GradeChipSelector: React.FC<GradeChipSelectorProps> = ({
   };
 
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      className="py-2"
-    >
-      {gradeOptions.map((option) => (
-        <TouchableOpacity
-          key={option.value}
-          onPress={() => handleSelect(option.value)}
-          className={`px-4 py-2 mx-2 rounded-full ${
-            selectedValue === option.value ? "bg-blue-500" : "bg-gray-200"
-          }`}
-        >
-          <Text
-            className={`text-sm ${
-              selectedValue === option.value ? "text-white" : "text-gray-700"
-            }`}
+    <View>
+      <Text style={styles.label}>Select School Grade</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollView}
+      >
+        {gradeOptions.map((option) => (
+          <TouchableOpacity
+            key={option.value}
+            onPress={() => handleSelect(option.value)}
+            style={[
+              styles.chip,
+              selectedValue === option.value
+                ? styles.selectedChip
+                : styles.unselectedChip,
+            ]}
           >
-            {option.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+            <Text
+              style={[
+                styles.chipText,
+                selectedValue === option.value
+                  ? styles.selectedText
+                  : styles.unselectedText,
+              ]}
+            >
+              {option.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: "#1f2937",
+    marginVertical: 10,
+    marginBottom: 4,
+    paddingHorizontal: 15,
+  },
+  scrollView: {
+    paddingVertical: 8,
+    paddingHorizontal: 10
+  },
+  chip: {
+    width: 80,
+    height: 34,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 5,
+  },
+  selectedChip: {
+    backgroundColor: AppPrimaryColor,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  unselectedChip: {
+    backgroundColor: "#e5e7eb",
+  },
+  chipText: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  selectedText: {
+    color: "#ffffff",
+  },
+  unselectedText: {
+    color: "#374151",
+  },
+});
 
 export default GradeChipSelector;
