@@ -104,6 +104,9 @@ function PDFScreen({
           <Pdf
             source={source}
             onLoadComplete={(numberOfPages, filePath) => {
+              setTimeout(() => {
+                setLoading(false);
+              }, 3000);
               console.log(`Number of pages: ${numberOfPages}`);
             }}
             onPageChanged={(page, numberOfPages) => {
@@ -149,6 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     marginTop: 25,
+    backgroundColor: "red",
   },
   pdf: {
     flex: 1,
