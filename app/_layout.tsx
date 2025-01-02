@@ -8,7 +8,6 @@ import BottomNav from "./components/BottomNav";
 
 function RootLayoutContent() {
   const { theme } = useTheme();
-  const { colorScheme } = useColorScheme();
 
   return (
     <>

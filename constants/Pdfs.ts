@@ -14,7 +14,7 @@ export const PDF_SECTIONS: Section[] = [
       },
       {
         title: "Chemistry",
-        path: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        path: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
         cover: require("../assets/covers/12/agri.png"),
       },
     ],
@@ -24,16 +24,29 @@ export const PDF_SECTIONS: Section[] = [
     subPdfs: [
       {
         title: "Biology",
-        path: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        path: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
         cover: require("../assets/covers/12/agri.png"),
       },
       {
         title: "Agri",
-        path: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        path: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
+        cover: require("../assets/covers/12/agri.png"),
+      },
+    ],
+  },
+  {
+    title: "Section 2",
+    subPdfs: [
+      {
+        title: "Biology",
+        path: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
+        cover: require("../assets/covers/12/agri.png"),
+      },
+      {
+        title: "Agri",
+        path: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
         cover: require("../assets/covers/12/agri.png"),
       },
     ],
   },
 ];
-
-// https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
