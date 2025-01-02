@@ -131,7 +131,7 @@ function PDFScreen({ pdfPath, onBack }: PDFScreenProps) {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
+    <SafeAreaView className="flex-1 bg-white/10">
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <View className="flex-row justify-end items-end bg-white p-5 py-10">
         <TouchableOpacity
