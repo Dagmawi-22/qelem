@@ -94,14 +94,19 @@ function PDFScreen({
           <Text className="mt-2 text-gray-600">Getting pdf ready...</Text>
         </View>
       ) : (
-        <Pdf
-          source={{ uri: pdfPath }}
-          onLoadComplete={() => setLoading(false)}
-          onError={(error) => {
-            console.error("Error loading PDF:", error);
-            setLoading(false);
-          }}
-        />
+        <View style={{ flex: 1, backgroundColor:"red" }}>
+          <Pdf
+            source={{ uri: pdfPath }}
+            onLoadComplete={() => {
+              console.log("PDF loaded successfully");
+              setLoading(false);
+            }}
+            onError={(error) => {
+              console.error("Error loading PDF:", error);
+              setLoading(false);
+            }}
+          />
+        </View>
       )}
     </SafeAreaView>
   );
