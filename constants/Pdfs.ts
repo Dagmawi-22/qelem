@@ -9,12 +9,12 @@ export const PDF_SECTIONS: Section[] = [
     subPdfs: [
       {
         title: "ICT",
-        path: require("../assets/pdfs/ict.pdf"),
+        path: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         cover: require("../assets/covers/12/ict.png"),
       },
       {
         title: "Chemistry",
-        path: require("../assets/pdfs/ict.pdf"),
+        path: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         cover: require("../assets/covers/12/agri.png"),
       },
     ],
@@ -24,14 +24,16 @@ export const PDF_SECTIONS: Section[] = [
     subPdfs: [
       {
         title: "Biology",
-        path: require("../assets/pdfs/ict.pdf"),
+        path: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         cover: require("../assets/covers/12/agri.png"),
       },
       {
         title: "Agri",
-        path: require("../assets/pdfs/ict.pdf"),
+        path: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         cover: require("../assets/covers/12/agri.png"),
       },
     ],
   },
 ];
+
+// https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf

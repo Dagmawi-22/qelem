@@ -10,10 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-       "enableHermes": true
+      "enableHermes": true
     },
     "android": {
-       "enableHermes": true,
+      "permissions": ["INTERNET"],
+      "enableHermes": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
