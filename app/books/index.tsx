@@ -7,6 +7,8 @@ import {
   ActivityIndicator,
   FlatList,
   StatusBar,
+  Dimensions,
+  StyleSheet,
 } from "react-native";
 import { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
@@ -76,9 +78,13 @@ function PDFScreen({
   onBack: () => void;
 }) {
   const [loading, setLoading] = useState<boolean>(true);
+  const source = {
+    uri: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
+    cache: true,
+  };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-black">
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <View className="flex-row justify-end items-end bg-white p-5 py-10">
         <TouchableOpacity
@@ -94,17 +100,22 @@ function PDFScreen({
           <Text className="mt-2 text-gray-600">Getting pdf ready...</Text>
         </View>
       ) : (
-        <View style={{ flex: 1, backgroundColor:"red" }}>
+        <View style={styles.container}>
           <Pdf
-            source={{ uri: pdfPath }}
-            onLoadComplete={() => {
-              console.log("PDF loaded successfully");
-              setLoading(false);
+            source={source}
+            onLoadComplete={(numberOfPages, filePath) => {
+              console.log(`Number of pages: ${numberOfPages}`);
+            }}
+            onPageChanged={(page, numberOfPages) => {
+              console.log(`Current page: ${page}`);
             }}
             onError={(error) => {
-              console.error("Error loading PDF:", error);
-              setLoading(false);
+              console.log(error);
             }}
+            onPressLink={(uri) => {
+              console.log(`Link pressed: ${uri}`);
+            }}
+            style={styles.pdf}
           />
         </View>
       )}
@@ -131,3 +142,17 @@ export default function App() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginTop: 25,
+  },
+  pdf: {
+    flex: 1,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
+});
