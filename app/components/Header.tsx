@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, StatusBar, Image } from "react-native";
 
 const IrregularHeader = () => {
-  const logo = require("../../assets/images/icon.png");
+  const logo = require("../../assets/images/playstore.png");
   return (
     <View style={styles.container}>
       <StatusBar
