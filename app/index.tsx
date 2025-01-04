@@ -80,7 +80,7 @@ function MenuScreen({
             columnWrapperStyle={{ justifyContent: "space-between", padding: 4 }}
             renderItem={({ item }) => (
               <TouchableOpacity
-                className="flex-1 bg-white m-2 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300"
+                className="flex-1 bg-white m-2 rounded-lg overflow-hidden duration-300 border border-gray-200 hover:border-gray-300"
                 onPress={() => onSelectPdf(item)}
               >
                 <View className="h-32 min-w-fit overflow-hidden rounded-lg">
@@ -93,9 +93,6 @@ function MenuScreen({
                 <View className="p-3">
                   <Text className="text-lg font-bold text-gray-800 truncate">
                     {item.title}
-                  </Text>
-                  <Text className="text-sm text-gray-500 mt-1 truncate">
-                    {item.sectionTitle}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -139,7 +136,7 @@ export default function App() {
       {selectedPdf ? (
         <SafeAreaView className="flex-1 bg-white">
           <StatusBar barStyle="dark-content" backgroundColor="white" />
-          <View className="flex-row justify-end items-end bg-white p-2">
+          <View className="flex-row justify-end items-end bg-white p-2 py-5">
             <TouchableOpacity
               onPress={() => setSelectedPdf(null)}
               className="flex-row items-end justify-end px-4 py-3 bg-black/10 rounded-lg"

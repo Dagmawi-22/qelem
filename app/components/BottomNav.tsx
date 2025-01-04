@@ -6,7 +6,7 @@ import { AppPrimaryColor } from "@/constants/Colors";
 
 type Tab = {
   id: string;
-  isIndex?: boolean 
+  isIndex?: boolean;
   label: string;
   icon: keyof typeof MaterialIcons.glyphMap;
 };
@@ -16,8 +16,7 @@ const BottomNav = () => {
 
   const tabs: Tab[] = [
     { id: "", label: "Books", icon: "book" },
-    { id: "bookmarks", label: "Bookmarks", icon: "bookmark" },
-    { id: "notes", label: "Notes", icon: "note" },
+    { id: "quiz", label: "Quizes", icon: "quiz" },
   ];
 
   const handleTabPress = (tab: Tab) => {
@@ -38,20 +37,13 @@ const BottomNav = () => {
           <MaterialIcons
             name={tab.icon}
             size={24}
-            color={
-              pathname === `/${tab.id}`
-                ? AppPrimaryColor
-                : "gray"
-            }
+            color={pathname === `/${tab.id}` ? AppPrimaryColor : "gray"}
           />
           <Text
             style={[
               styles.tabText,
               {
-                color:
-                  pathname === `/${tab.id}`
-                    ? AppPrimaryColor
-                    : "gray",
+                color: pathname === `/${tab.id}` ? AppPrimaryColor : "gray",
               },
             ]}
           >

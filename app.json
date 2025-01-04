@@ -44,7 +44,7 @@
       "typedRoutes": true
     },
     "locales": {
-      "en-US": "./i18n/locales/en-US/translation.json",
+      "en-US": "./i18n/locales/en/translation.json",
       "ar": "./i18n/locales/ar/translation.json"
     },
     "extra": {
