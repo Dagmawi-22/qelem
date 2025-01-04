@@ -7,15 +7,13 @@ import {
   ActivityIndicator,
   FlatList,
   StatusBar,
-  Dimensions,
   StyleSheet,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
-import Pdf from "react-native-pdf";
+import { WebView } from "react-native-webview";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
 import AppHeader from "./components/Header";
-import { PDFScreenProps, PdfSource } from "@/constants/interfaces";
 import GradeChipSelector from "@/components/ui/GradeSelector";
 
 function MenuScreen({
@@ -109,74 +107,58 @@ function MenuScreen({
   );
 }
 
-function PDFScreen({ pdfPath, onBack }: PDFScreenProps) {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const source: PdfSource = {
-    uri: pdfPath,
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-  }, [pdfPath]);
-
-  if (error) {
-    return (
-      <SafeAreaView className="flex-1 bg-black justify-center items-center">
-        <Text className="text-white">{error}</Text>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView className="flex-1 bg-white/10">
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View className="flex-row justify-end items-end bg-white p-5 py-10">
-        <TouchableOpacity
-          onPress={onBack}
-          className="flex-row items-end justify-end px-4 py-3 bg-black/10 rounded-lg"
-        >
-          <FontAwesome name="close" size={24} color="gray" />
-        </TouchableOpacity>
-      </View>
-      {loading ? (
-        <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color="#4B5563" />
-          <Text className="mt-2 text-gray-600">Getting pdf ready...</Text>
-        </View>
-      ) : (
-        <Pdf
-          source={source}
-          style={styles.pdf}
-          onLoadComplete={(numberOfPages: number) => {
-            setLoading(false);
-            console.log(`Number of pages: ${numberOfPages}`);
-          }}
-          onError={(error: any) => {
-            setError("Failed to load PDF: " + error.message);
-            setLoading(false);
-          }}
-        />
-      )}
-    </SafeAreaView>
-  );
-}
-
 export default function App() {
   const [selectedPdf, setSelectedPdf] = useState<{
     title: string;
     path: string;
   } | null>(null);
 
+  const getDirectPdfUrl = (url: string) => {
+    if (url.includes("drive.google.com")) {
+      // Extract the file ID from the Google Drive URL
+      const fileId = url.match(/\/file\/d\/([^\/]+)\//)?.[1];
+      if (fileId) {
+        // Return the direct download URL for the PDF
+        return `https://drive.google.com/uc?export=download&id=${fileId}`;
+      }
+    }
+    // If it's not a Google Drive URL, return the original URL
+    return url;
+  };
+
+  // Function to generate a Google Docs Viewer URL for the PDF
+  const getPdfViewerUrl = (pdfUrl: string) => {
+    const directUrl = getDirectPdfUrl(pdfUrl);
+    return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+      directUrl
+    )}`;
+  };
+
   return (
-    <View className="flex-1 bg-[#1a1a1a]/30">
+    <View className="flex-1 bg-white/20">
       {selectedPdf ? (
-        <PDFScreen
-          pdfPath={selectedPdf?.path}
-          onBack={() => setSelectedPdf(null)}
-        />
+        <SafeAreaView className="flex-1 bg-white">
+          <StatusBar barStyle="dark-content" backgroundColor="white" />
+          <View className="flex-row justify-end items-end bg-white p-2">
+            <TouchableOpacity
+              onPress={() => setSelectedPdf(null)}
+              className="flex-row items-end justify-end px-4 py-3 bg-black/10 rounded-lg"
+            >
+              <FontAwesome name="close" size={24} color="gray" />
+            </TouchableOpacity>
+          </View>
+          <WebView
+            source={{ uri: getPdfViewerUrl(selectedPdf.path) }}
+            style={styles.webview}
+            startInLoadingState={true}
+            renderLoading={() => (
+              <View className="flex-1 justify-center items-center">
+                <ActivityIndicator size="large" color="#4B5563" />
+                <Text className="mt-2 text-gray-600">Loading PDF...</Text>
+              </View>
+            )}
+          />
+        </SafeAreaView>
       ) : (
         <MenuScreen onSelectPdf={(pdf) => setSelectedPdf(pdf)} />
       )}
@@ -185,9 +167,11 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  pdf: {
+  container: {
     flex: 1,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    backgroundColor: "#fff",
+  },
+  webview: {
+    flex: 1,
   },
 });
