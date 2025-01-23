@@ -11,7 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
-import * as FileSystem from "expo-file-system";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
 import AppHeader from "./components/Header";
 import GradeChipSelector from "@/components/ui/GradeSelector";
@@ -26,7 +25,7 @@ function MenuScreen({
   const [allPdfs, setAllPdfs] = useState<
     { title: string; path: string; sectionTitle: string; imgUrl?: string }[]
   >([]);
-  const [selectedGrade, setSelectedGrade] = useState<string>("12");
+  const [selectedGrade, setSelectedGrade] = useState<number>(12);
 
   // Function to fetch PDFs
   const fetchPdfs = async () => {
@@ -47,6 +46,8 @@ function MenuScreen({
   useEffect(() => {
     fetchPdfs();
   }, [selectedGrade]);
+
+  let x: readonly string[] = [""];
 
   return (
     <SafeAreaView className="flex-1 bg-white">

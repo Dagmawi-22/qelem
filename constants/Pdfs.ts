@@ -5,7 +5,7 @@ interface Section {
 
 export const PDF_SECTIONS: Section[] = [
   {
-    title: "Grade 11",
+    title: "All Pdfs",
     subPdfs: [
       {
         title: "Agriculture",

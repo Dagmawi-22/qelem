@@ -9,15 +9,15 @@ import {
 } from "react-native";
 
 const gradeOptions = [
-  { label: "Grade 12", value: "12" },
-  { label: "Grade 11", value: "11" },
-  { label: "Grade 10", value: "10" },
-  { label: "Grade 9", value: "9" },
+  { label: "Grade 12", value: 12 },
+  { label: "Grade 11", value: 11 },
+  { label: "Grade 10", value: 10 },
+  { label: "Grade 9", value: 9 },
 ];
 
 type GradeChipSelectorProps = {
-  defaultSelected?: string;
-  onSelect?: (value: string) => void;
+  defaultSelected?: number;
+  onSelect?: (value: number) => void;
 };
 
 const GradeChipSelector: React.FC<GradeChipSelectorProps> = ({
@@ -28,7 +28,7 @@ const GradeChipSelector: React.FC<GradeChipSelectorProps> = ({
     defaultSelected || gradeOptions[0]?.value
   );
 
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: number) => {
     setSelectedValue(value);
     if (onSelect) {
       onSelect(value);
