@@ -4,8 +4,8 @@ import * as FileSystem from "expo-file-system";
 import { Image, ImageProps } from "expo-image";
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {
-  source: { uri: string }; // Ensure source has a uri property
-  className?: string; // Optional className for Tailwind
+  source: { uri: string }; 
+  className?: string; 
 }
 
 const CachedImage: React.FC<CachedImageProps> = ({
