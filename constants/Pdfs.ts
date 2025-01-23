@@ -88,7 +88,8 @@ export const PDF_SECTIONS: Section[] = [
         title: "Physics",
         path: "https://drive.google.com/file/d/1W0YTbmtJNlMX-fWAjnhGEZrzXdUR-gSA/view?usp=sharing",
         grade: 12,
-        imgUrl: "",
+        imgUrl:
+          "https://www.vectorstock.com/royalty-free-vector/magical-open-book-engraving-vector-52016463",
       },
     ],
   },
