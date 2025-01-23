@@ -2,7 +2,6 @@ import {
   TouchableOpacity,
   Text,
   View,
-  Image,
   SafeAreaView,
   ActivityIndicator,
   FlatList,
@@ -13,48 +12,26 @@ import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
 import * as FileSystem from "expo-file-system";
-import * as ImageManipulator from "expo-image-manipulator";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
 import AppHeader from "./components/Header";
 import GradeChipSelector from "@/components/ui/GradeSelector";
+import CachedImage from "./components/CachedImage";
 
 function MenuScreen({
   onSelectPdf,
 }: {
-  onSelectPdf: (pdf: { title: string; path: string }) => void;
+  onSelectPdf: (pdf: { title: string; path: string; imgUrl?: string }) => void;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allPdfs, setAllPdfs] = useState<
-    { title: string; path: string; sectionTitle: string; thumbnail?: string }[]
+    { title: string; path: string; sectionTitle: string; imgUrl?: string }[]
   >([]);
   const [selectedGrade, setSelectedGrade] = useState<string>("12");
 
-  // Function to generate a thumbnail from the first page of a PDF
-  const generateThumbnail = async (pdfPath: string) => {
-    try {
-      // Read the PDF file as a base64 string
-      const base64Data = await FileSystem.readAsStringAsync(pdfPath, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      // Convert the first page of the PDF to an image
-      const result = await ImageManipulator.manipulateAsync(
-        `data:application/pdf;base64,${base64Data}`,
-        [{ resize: { width: 200 } }], // Resize to thumbnail size
-        { format: ImageManipulator.SaveFormat.JPEG, base64: true }
-      );
-
-      return result.uri; // Return the thumbnail URI
-    } catch (error) {
-      console.error("Failed to generate thumbnail:", error);
-      return null;
-    }
-  };
-
-  // Function to fetch PDFs and generate thumbnails
+  // Function to fetch PDFs
   const fetchPdfs = async () => {
     setIsLoading(true);
-    setTimeout(async () => {
+    setTimeout(() => {
       const pdfs = PDF_SECTIONS.flatMap((section) =>
         section.subPdfs.map((pdf) => ({
           ...pdf,
@@ -62,15 +39,7 @@ function MenuScreen({
         }))
       );
 
-      // Generate thumbnails for all PDFs
-      const pdfsWithThumbnails = await Promise.all(
-        pdfs.map(async (pdf) => {
-          const thumbnail = await generateThumbnail(pdf.path);
-          return { ...pdf, thumbnail };
-        })
-      );
-
-      setAllPdfs(pdfsWithThumbnails as any);
+      setAllPdfs(pdfs);
       setIsLoading(false);
     }, 3000);
   };
@@ -118,15 +87,15 @@ function MenuScreen({
                 onPress={() => onSelectPdf(item)}
               >
                 <View className="h-32 min-w-fit overflow-hidden rounded-lg">
-                  {item.thumbnail ? (
-                    <Image
-                      source={{ uri: item.thumbnail }}
+                  {item.imgUrl ? (
+                    <CachedImage
+                      source={{ uri: item.imgUrl }}
                       className="w-full h-full rounded-lg object-cover"
                       resizeMode="cover"
                     />
                   ) : (
                     <View className="w-full h-full bg-gray-200 rounded-lg flex justify-center items-center">
-                      <Text className="text-gray-500">No Thumbnail</Text>
+                      <Text className="text-gray-500">No Image</Text>
                     </View>
                   )}
                 </View>
@@ -148,6 +117,7 @@ export default function App() {
   const [selectedPdf, setSelectedPdf] = useState<{
     title: string;
     path: string;
+    imgUrl?: string;
   } | null>(null);
 
   const getDirectPdfUrl = (url: string) => {
