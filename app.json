@@ -37,6 +37,7 @@
       ],
       "expo-localization",
       "expo-asset"
+      
     ],
     "development": {
       "developmentClient": true

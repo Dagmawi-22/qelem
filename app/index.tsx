@@ -12,6 +12,8 @@ import {
 import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
+import * as FileSystem from "expo-file-system";
+import * as ImageManipulator from "expo-image-manipulator";
 import { PDF_SECTIONS } from "@/constants/Pdfs";
 import AppHeader from "./components/Header";
 import GradeChipSelector from "@/components/ui/GradeSelector";
@@ -23,20 +25,52 @@ function MenuScreen({
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allPdfs, setAllPdfs] = useState<
-    { title: string; path: string; sectionTitle: string }[]
+    { title: string; path: string; sectionTitle: string; thumbnail?: string }[]
   >([]);
   const [selectedGrade, setSelectedGrade] = useState<string>("12");
 
-  const fetchPdfs = () => {
+  // Function to generate a thumbnail from the first page of a PDF
+  const generateThumbnail = async (pdfPath: string) => {
+    try {
+      // Read the PDF file as a base64 string
+      const base64Data = await FileSystem.readAsStringAsync(pdfPath, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      // Convert the first page of the PDF to an image
+      const result = await ImageManipulator.manipulateAsync(
+        `data:application/pdf;base64,${base64Data}`,
+        [{ resize: { width: 200 } }], // Resize to thumbnail size
+        { format: ImageManipulator.SaveFormat.JPEG, base64: true }
+      );
+
+      return result.uri; // Return the thumbnail URI
+    } catch (error) {
+      console.error("Failed to generate thumbnail:", error);
+      return null;
+    }
+  };
+
+  // Function to fetch PDFs and generate thumbnails
+  const fetchPdfs = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       const pdfs = PDF_SECTIONS.flatMap((section) =>
         section.subPdfs.map((pdf) => ({
           ...pdf,
           sectionTitle: section.title,
         }))
       );
-      setAllPdfs(pdfs);
+
+      // Generate thumbnails for all PDFs
+      const pdfsWithThumbnails = await Promise.all(
+        pdfs.map(async (pdf) => {
+          const thumbnail = await generateThumbnail(pdf.path);
+          return { ...pdf, thumbnail };
+        })
+      );
+
+      setAllPdfs(pdfsWithThumbnails as any);
       setIsLoading(false);
     }, 3000);
   };
@@ -84,11 +118,17 @@ function MenuScreen({
                 onPress={() => onSelectPdf(item)}
               >
                 <View className="h-32 min-w-fit overflow-hidden rounded-lg">
-                  <Image
-                    source={require("../assets/covers/12/ict.png")}
-                    className="w-full h-full rounded-lg object-cover"
-                    resizeMode="cover"
-                  />
+                  {item.thumbnail ? (
+                    <Image
+                      source={{ uri: item.thumbnail }}
+                      className="w-full h-full rounded-lg object-cover"
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <View className="w-full h-full bg-gray-200 rounded-lg flex justify-center items-center">
+                      <Text className="text-gray-500">No Thumbnail</Text>
+                    </View>
+                  )}
                 </View>
                 <View className="p-3">
                   <Text className="text-lg font-bold text-gray-800 truncate">
